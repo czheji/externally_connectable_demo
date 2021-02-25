@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Board Demo</title>
+  </head>
+  <body>
+    <div>
+      <label for="id"
+        >Extension ID (Access: chrome://extensions/ and toggle developer mode on
+        to get the ID):
+      </label>
+      <input type="text" placeholder="Enter Extention ID" id="id" />
+    </div>
+    <hr />
+    <div>
+      <button id="login-button">Login</button>
+      <button id="logout-button">Logout</button>
+    </div>
+    <pre id="payload-preview"></pre>
+  </body>
+
+  <script defer>
+    function sendMessageToExtension(payload) {
+      const extensionIdField = document.querySelector("#id");
+
+      if (chrome && chrome.runtime) {
+        chrome.runtime.sendMessage(
+          extensionIdField.value || "nfoddpmcmcgidocmelbgdapjjiooajkp",
+          payload
+        );
+      }
+    }
+    const loginButton = document.querySelector("#login-button");
+    const logoutButton = document.querySelector("#logout-button");
+    const payloadPreview = document.querySelector("#payload-preview");
+
+    loginButton.onclick = () => {
+      const payload = { type: "LOG_IN", token: "xxx" };
+
+      sendMessageToExtension(payload);
+      payloadPreview.innerHTML = "Sent: " + JSON.stringify(payload);
+    };
+
+    logoutButton.onclick = () => {
+      const payload = { type: "LOG_OUT" };
+
+      sendMessageToExtension({ type: "LOG_OUT" });
+      payloadPreview.innerHTML = "Sent: " + JSON.stringify(payload);
+    };
+  </script>
+</html>
